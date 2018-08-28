@@ -90,37 +90,6 @@ class ACaseClassTest extends FunSpec
 			actual shouldEqual expected
 		}
 
-		it("should save a more complex object tree") {
-			val coll = JacksonMongoCollection.builder()
-				.withObjectMapper(objectMapper)
-				.build(
-					mongoDatabase.getCollection("ReportManifest"),
-					classOf[ReportManifest]
-				)
-			val expected = ReportManifest(
-				userIdentifier = "b",
-				courseReports = List(
-					CourseReports(
-						courseUri = "b",
-						courseName = "name",
-						reports = List(Report("report:uri", "report name", new Date(), "type"))
-					)
-				),
-				institutionReports = List(
-					InstitutionReports(
-						institutionUri = "b",
-						institutionName = "name",
-						reports = List(Report("report:uri", "report name", new Date(), "type"))
-					)
-				)
-			)
-			coll.save(expected)
-
-			val actual = coll.findOne(DBQuery.is("userIdentifier", "b"))
-
-			actual shouldEqual expected
-		}
-
 	}
 
 	override protected def afterAll(): Unit = {
